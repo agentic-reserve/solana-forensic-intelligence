@@ -1,6 +1,6 @@
 # Solana Forensic Intelligence Platform
 
-![Solana Forensic Intelligence](./icon_header_white.png)
+![Solana Forensic Intelligence](./logo_black_transparent.png)
 
 A professional blockchain intelligence and forensic analysis platform for Solana. Perform comprehensive address investigations, visualize transaction networks, detect suspicious patterns, and generate detailed compliance reports.
 
