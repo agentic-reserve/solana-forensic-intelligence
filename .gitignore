@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+*.js.map
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Data output (keep structure, ignore content)
+data/kyt_audit/*.md
+data/kyt_audit/*.csv
+data/single_address_trace/*.csv
+data/single_address_trace/*.json
+data/scammer_outflows/*.csv
+data/scammer_outflows/*.json
+data/*.csv
+data/*.json
+!data/.gitkeep
+
+# Case-specific files
+solscan/
+fundflow/
+visualizations/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Test files
+coverage/
+.nyc_output/
+
+# Misc
+*.bak
+*.orig
