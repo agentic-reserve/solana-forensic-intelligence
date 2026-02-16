@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Forensic Analysis - Foym8s46ib3VGRckSWij</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #1a1a1a; color: #fff; }
+    #graph { width: 100vw; height: 100vh; }
+    .node { cursor: pointer; }
+    .node.target { fill: #ff4444; }
+    .node.counterparty { fill: #4444ff; }
+    .link { stroke: #999; stroke-opacity: 0.6; }
+    .link.unidirectional { stroke-dasharray: 5,5; }
+    .link.bidirectional { stroke-width: 2; }
+    #info { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.8); padding: 20px; border-radius: 8px; max-width: 400px; }
+    #legend { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 8px; }
+    .legend-item { margin: 5px 0; }
+    .legend-color { display: inline-block; width: 20px; height: 20px; margin-right: 10px; vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <div id="graph"></div>
+  <div id="info">
+    <h2>Forensic Analysis</h2>
+    <p><strong>Target:</strong> Foym8s46ib3VGRckSWijmQKb9UfcRf...</p>
+    <p><strong>Nodes:</strong> 0</p>
+    <p><strong>Edges:</strong> 0</p>
+    <p><strong>Volume:</strong> 0.00 SOL</p>
+    <div id="node-details"></div>
+  </div>
+  <div id="legend">
+    <h3>Legend</h3>
+    <div class="legend-item"><span class="legend-color" style="background: #ff4444;"></span>Target</div>
+    <div class="legend-item"><span class="legend-color" style="background: #4444ff;"></span>Counterparty</div>
+    <div class="legend-item">━━━ Bidirectional</div>
+    <div class="legend-item">- - - Unidirectional</div>
+  </div>
+  <script>
+    const graphData = {"nodes":[],"edges":[],"metadata":{"targetAddress":"Foym8s46ib3VGRckSWijmQKb9UfcRfuhQqMvHpmN1w21","depth":3,"totalNodes":0,"totalEdges":0,"totalVolume":0,"analysisDate":"2026-02-16T14:28:31.282Z"}};
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    const svg = d3.select("#graph").append("svg").attr("width", width).attr("height", height);
+    const simulation = d3.forceSimulation(graphData.nodes)
+      .force("link", d3.forceLink(graphData.edges).id(d => d.id).distance(100))
+      .force("charge", d3.forceManyBody().strength(-300))
+      .force("center", d3.forceCenter(width / 2, height / 2));
+    
+    const link = svg.append("g").selectAll("line").data(graphData.edges).enter().append("line")
+      .attr("class", d => "link " + d.direction)
+      .attr("stroke-width", d => Math.sqrt(d.weight / 1e9));
+    
+    const node = svg.append("g").selectAll("circle").data(graphData.nodes).enter().append("circle")
+      .attr("class", d => "node " + d.type)
+      .attr("r", d => 5 + Math.sqrt(d.transactionCount))
+      .call(d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended))
+      .on("click", showNodeDetails);
+    
+    node.append("title").text(d => d.label + "\nRisk: " + d.riskScore);
+    
+    simulation.on("tick", () => {
+      link.attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+      node.attr("cx", d => d.x).attr("cy", d => d.y);
+    });
+    
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x; d.fy = d.y;
+    }
+    function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null; d.fy = null;
+    }
+    function showNodeDetails(event, d) {
+      document.getElementById("node-details").innerHTML = `<hr><h3>Node Details</h3>
+        <p><strong>Address:</strong> ${d.id.substring(0, 30)}...</p>
+        <p><strong>Received:</strong> ${(d.totalReceived / 1e9).toFixed(4)} SOL</p>
+        <p><strong>Sent:</strong> ${(d.totalSent / 1e9).toFixed(4)} SOL</p>
+        <p><strong>Transactions:</strong> ${d.transactionCount}</p>
+        <p><strong>Risk:</strong> ${d.riskScore}/100</p>
+        <p><strong>Tags:</strong> ${d.tags.join(', ') || 'None'}</p>`;
+    }
+  </script>
+</body>
+</html>

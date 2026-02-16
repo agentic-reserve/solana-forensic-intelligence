@@ -421,33 +421,68 @@ class SolanaForensicAnalyzer {
     const flows: TransactionFlow[] = [];
     
     try {
-      const signature = tx.transaction?.signatures?.[0] || tx.signature;
-      const blockTime = tx.blockTime;
-      const timestamp = new Date(blockTime * 1000).toISOString();
+      // Use Enhanced Transaction format from Helius
+      const signature = tx.signature;
+      const timestamp = new Date(tx.timestamp * 1000).toISOString();
 
-      const accounts = tx.transaction?.message?.accountKeys || [];
-      const preBalances = tx.meta?.preBalances || [];
-      const postBalances = tx.meta?.postBalances || [];
+      // Extract native transfers (SOL)
+      if (tx.nativeTransfers && tx.nativeTransfers.length > 0) {
+        for (const transfer of tx.nativeTransfers) {
+          flows.push({
+            signature,
+            timestamp,
+            from: transfer.fromUserAccount,
+            to: transfer.toUserAccount,
+            amount: transfer.amount,
+            amountSol: transfer.amount / 1e9,
+            type: 'SOL',
+            status: tx.transactionError ? 'failed' : 'success'
+          });
+        }
+      }
 
-      for (let i = 0; i < accounts.length; i++) {
-        const account = typeof accounts[i] === 'string' ? accounts[i] : accounts[i].pubkey;
-        const balanceChange = postBalances[i] - preBalances[i];
+      // Extract token transfers
+      if (tx.tokenTransfers && tx.tokenTransfers.length > 0) {
+        for (const transfer of tx.tokenTransfers) {
+          flows.push({
+            signature,
+            timestamp,
+            from: transfer.fromUserAccount,
+            to: transfer.toUserAccount,
+            amount: Math.floor(transfer.tokenAmount * 1e9), // Convert to lamports equivalent
+            amountSol: transfer.tokenAmount,
+            type: 'TOKEN',
+            status: tx.transactionError ? 'failed' : 'success'
+          });
+        }
+      }
 
-        if (Math.abs(balanceChange) > 1000) {
-          if (balanceChange < 0) {
-            for (let j = 0; j < accounts.length; j++) {
-              if (i !== j && postBalances[j] - preBalances[j] > 1000) {
-                const recipient = typeof accounts[j] === 'string' ? accounts[j] : accounts[j].pubkey;
-                flows.push({
-                  signature,
-                  timestamp,
-                  from: account,
-                  to: recipient,
-                  amount: Math.abs(balanceChange),
-                  amountSol: Math.abs(balanceChange) / 1e9,
-                  type: 'SOL',
-                  status: tx.meta?.err ? 'failed' : 'success'
-                });
+      // Fallback: parse from raw transaction data if enhanced data not available
+      if (flows.length === 0 && tx.transaction) {
+        const accounts = tx.transaction?.message?.accountKeys || [];
+        const preBalances = tx.meta?.preBalances || [];
+        const postBalances = tx.meta?.postBalances || [];
+
+        for (let i = 0; i < accounts.length; i++) {
+          const account = typeof accounts[i] === 'string' ? accounts[i] : accounts[i].pubkey;
+          const balanceChange = postBalances[i] - preBalances[i];
+
+          if (Math.abs(balanceChange) > 1000) {
+            if (balanceChange < 0) {
+              for (let j = 0; j < accounts.length; j++) {
+                if (i !== j && postBalances[j] - preBalances[j] > 1000) {
+                  const recipient = typeof accounts[j] === 'string' ? accounts[j] : accounts[j].pubkey;
+                  flows.push({
+                    signature,
+                    timestamp,
+                    from: account,
+                    to: recipient,
+                    amount: Math.abs(balanceChange),
+                    amountSol: Math.abs(balanceChange) / 1e9,
+                    type: 'SOL',
+                    status: tx.meta?.err ? 'failed' : 'success'
+                  });
+                }
               }
             }
           }
