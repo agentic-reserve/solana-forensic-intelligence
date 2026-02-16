@@ -1,27 +1,4 @@
-export interface RiskScore {
-  address: string;
-  network: string;
-  risk_score: number;
-  risk_level: string;
-  risk_factors: string[];
-}
-
-export interface Counterparty {
-  address: string;
-  transaction_count: number;
-  total_volume: number;
-  labels?: string[];
-}
-
-export interface AddressStats {
-  address: string;
-  first_seen: string;
-  last_seen: string;
-  transaction_count: number;
-  total_received: number;
-  total_sent: number;
-}
-
+// Transaction Data
 export interface TransactionData {
   signature: string;
   slot: number;
@@ -30,18 +7,83 @@ export interface TransactionData {
   meta: any;
 }
 
-export interface InvestigationReport {
-  address: string;
-  role: 'BAD_ACTOR' | 'VICTIM';
-  riskScore: RiskScore | null;
-  counterparties: Counterparty[];
-  statistics: AddressStats | null;
-  recentTransactions: TransactionData[];
-  patterns: PatternAnalysis;
+// Transaction Flow
+export interface TransactionFlow {
+  signature: string;
+  timestamp: string;
+  from: string;
+  to: string;
+  amount: number;
+  amountSol: number;
+  depth?: number;
+  path?: string[];
+  type?: string;
+  status?: string;
 }
 
-export interface PatternAnalysis {
-  suspiciousPatterns: string[];
-  behaviorFlags: string[];
-  connectionToVictim?: boolean;
+// Address Profile
+export interface AddressProfile {
+  address: string;
+  totalReceived: number;
+  totalSent: number;
+  transactionCount: number;
+  firstSeen: string;
+  lastSeen: string;
+  depth?: number;
+  isEndpoint?: boolean;
+  cluster?: string;
+  counterparties?: string[];
+  netFlow?: number;
+  riskScore?: number;
+  tags?: string[];
+}
+
+// Graph Node
+export interface Node {
+  id: string;
+  label: string;
+  type: 'target' | 'counterparty';
+  totalReceived: number;
+  totalSent: number;
+  transactionCount: number;
+  firstSeen: string;
+  lastSeen: string;
+  riskScore: number;
+  tags: string[];
+}
+
+// Graph Edge
+export interface Edge {
+  id: string;
+  source: string;
+  target: string;
+  weight: number;
+  transactionCount: number;
+  direction: 'unidirectional' | 'bidirectional';
+  type: 'SOL';
+  transactions: TransactionFlow[];
+}
+
+// Forensic Graph
+export interface ForensicGraph {
+  nodes: Node[];
+  edges: Edge[];
+  metadata: {
+    targetAddress: string;
+    depth: number;
+    totalNodes: number;
+    totalEdges: number;
+    totalVolume: number;
+    analysisDate: string;
+  };
+}
+
+// Cluster Analysis
+export interface ClusterAnalysis {
+  clusterId: string;
+  addresses: string[];
+  totalVolume: number;
+  transactionCount: number;
+  pattern: 'accumulation' | 'distribution' | 'mixing' | 'normal';
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
 }

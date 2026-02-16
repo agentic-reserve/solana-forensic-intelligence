@@ -188,147 +188,84 @@ The free tier includes 100,000 API credits per month, sufficient for most invest
 
 ## Quick Start
 
-### Forensic Visualization (Recommended)
+### Quick Address Trace
 
-Generate an interactive graph visualization with automatic risk assessment:
+Perform rapid initial assessment (30 seconds):
 
 ```bash
-npx tsx src/scripts/forensic-visualizer.ts <ADDRESS> 3
+npx tsx src/scripts/analyze.ts trace <ADDRESS>
+```
+
+### KYT/KYA Audit Report
+
+Generate comprehensive compliance documentation with depth analysis:
+
+```bash
+npx tsx src/scripts/analyze.ts audit <ADDRESS> 3
+```
+
+### Forensic Visualization
+
+Generate interactive graph visualization with automatic risk assessment:
+
+```bash
+npx tsx src/scripts/analyze.ts forensic <ADDRESS> 3
+```
+
+### Complete Analysis
+
+Run all analyses (trace + audit + forensic):
+
+```bash
+npx tsx src/scripts/analyze.ts all <ADDRESS> 3
 ```
 
 **Parameters:**
 - `<ADDRESS>`: Solana address to investigate
-- `3`: Analysis depth (recommended: 2-5)
+- `3`: Analysis depth for audit/forensic (recommended: 2-5)
 
-**Output Location:**
-```
-data/forensic_analysis/<ADDRESS>/
-```
-
-**View Results:**
-```bash
-open data/forensic_analysis/<ADDRESS>/visualization.html
-```
-
-### KYT Audit Report
-
-Generate comprehensive compliance documentation:
-
-```bash
-npx tsx src/scripts/kyt-audit-single-address.ts <ADDRESS> 3
-```
-
-### Address Trace
-
-Perform rapid initial assessment:
-
-```bash
-npx tsx src/scripts/trace-single-address.ts <ADDRESS>
-```
-
-### Real-time Monitoring
-
-Start continuous address surveillance:
-
-```bash
-npx tsx src/scripts/monitor-address.ts <ADDRESS>
-```
+**Output Locations:**
+- Trace: `data/trace/`
+- Audit: `data/audit/`
+- Forensic: `data/forensic/<ADDRESS>/`
 
 ---
 
 ## Tools Overview
 
-### 1. Forensic Visualizer
+### Unified Analysis Tool
 
-**Purpose:** Visual investigation and pattern detection
+**Purpose:** All-in-one forensic analysis tool
 
 **Command:**
 ```bash
-npx tsx src/scripts/forensic-visualizer.ts <ADDRESS> <DEPTH>
+npx tsx src/scripts/analyze.ts <COMMAND> <ADDRESS> [DEPTH]
 ```
 
+**Commands:**
+- `trace` - Quick address trace (30 seconds)
+- `audit` - KYT/KYA audit with depth analysis
+- `forensic` - Full forensic visualization with graphs
+- `all` - Run all analyses
+
 **Features:**
-- Interactive D3.js network graphs
-- Automatic cluster detection
-- Risk scoring (0-100 scale)
-- Pattern identification
-- Multiple export formats
+- Single script for all tasks
+- Consistent output formats
+- Integrated analysis pipeline
+- Automatic risk scoring
+- Pattern detection
+- Cluster identification
 
 **Best For:**
-- Visual presentations
-- Pattern detection
-- Due diligence investigations
-- Fund flow tracking
+- All investigation scenarios
+- Streamlined workflow
+- Consistent results
 
 **Execution Time:**
-- Depth 2: ~30 seconds
-- Depth 3: ~2 minutes (recommended)
-- Depth 5: ~10 minutes
-
-### 2. KYT Audit Tool
-
-**Purpose:** Compliance documentation and detailed analysis
-
-**Command:**
-```bash
-npx tsx src/scripts/kyt-audit-single-address.ts <ADDRESS> <DEPTH>
-```
-
-**Features:**
-- Comprehensive written reports
-- Multi-level depth analysis
-- Transaction flow tracking
-- CSV exports
-- Markdown documentation
-
-**Best For:**
-- Regulatory compliance
-- Audit trails
-- Exchange KYC/AML
-- Detailed documentation
-
-### 3. Address Tracer
-
-**Purpose:** Quick checks and basic analysis
-
-**Command:**
-```bash
-npx tsx src/scripts/trace-single-address.ts <ADDRESS>
-```
-
-**Features:**
-- Fast execution (30 seconds)
-- Transaction history
-- Counterparty identification
-- Basic statistics
-- JSON summary
-
-**Best For:**
-- Initial screening
-- Quick checks
-- Basic statistics
-- Transaction history
-
-### 4. Address Monitor
-
-**Purpose:** Real-time surveillance
-
-**Command:**
-```bash
-npx tsx src/scripts/monitor-address.ts <ADDRESS>
-```
-
-**Features:**
-- WebSocket connection
-- Real-time notifications
-- Continuous tracking
-- Live updates
-
-**Best For:**
-- Ongoing surveillance
-- Alert systems
-- Real-time tracking
-- Instant notifications
+- Trace: ~30 seconds
+- Audit (depth 3): ~2 minutes
+- Forensic (depth 3): ~2 minutes
+- All: ~5 minutes
 
 ---
 
@@ -538,18 +475,15 @@ npx tsx src/scripts/monitor-address.ts <ADDRESS>
 solana-forensic-intelligence/
 ├── src/
 │   ├── scripts/
-│   │   ├── forensic-visualizer.ts         # Interactive graph visualization
-│   │   ├── kyt-audit-single-address.ts    # Compliance audit tool
-│   │   ├── trace-single-address.ts        # Quick address tracer
-│   │   └── monitor-address.ts             # Real-time monitor
+│   │   └── analyze.ts                     # Unified analysis tool (all-in-one)
 │   ├── services/
 │   │   └── helius.service.ts              # Helius API integration
 │   └── types/
 │       └── index.ts                        # TypeScript definitions
 ├── data/
-│   ├── forensic_analysis/                  # Visualization outputs
-│   ├── kyt_audit/                          # Audit reports
-│   └── single_address_trace/               # Trace outputs
+│   ├── trace/                              # Quick trace outputs
+│   ├── audit/                              # Audit reports
+│   └── forensic/                           # Forensic visualizations
 ├── docs/
 │   ├── FORENSIC_VISUALIZER.md             # Visualizer guide
 │   ├── QUICK_START_FORENSIC.md            # Quick start

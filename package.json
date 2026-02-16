@@ -7,12 +7,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "investigate": "ts-node src/investigate-helius.ts",
-    "monitor": "ts-node src/scripts/monitor-address.ts",
-    "assets": "ts-node src/scripts/get-assets.ts",
-    "trace": "ts-node src/scripts/trace-bad-actor.ts",
-    "track-outflows": "ts-node src/scripts/track-scammer-outflows.ts",
-    "forensic": "tsx src/scripts/forensic-visualizer.ts"
+    "analyze": "tsx src/scripts/analyze.ts"
   },
   "dependencies": {
     "@solana/web3.js": "^1.87.6",
