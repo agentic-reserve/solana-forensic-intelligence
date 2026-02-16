@@ -171,7 +171,7 @@ HELIUS_API_KEY=your_api_key_here
 
 5. Verify installation:
 ```bash
-npx tsx src/scripts/check-address.ts --help
+npx tsx src/scripts/trace-single-address.ts --help
 ```
 
 ### Obtaining API Key
@@ -218,7 +218,7 @@ Generate comprehensive compliance documentation:
 npx tsx src/scripts/kyt-audit-single-address.ts <ADDRESS> 3
 ```
 
-### Quick Address Check
+### Address Trace
 
 Perform rapid initial assessment:
 
@@ -541,7 +541,6 @@ solana-forensic-intelligence/
 │   │   ├── forensic-visualizer.ts         # Interactive graph visualization
 │   │   ├── kyt-audit-single-address.ts    # Compliance audit tool
 │   │   ├── trace-single-address.ts        # Quick address tracer
-│   │   ├── check-address.ts               # Address checker
 │   │   └── monitor-address.ts             # Real-time monitor
 │   ├── services/
 │   │   └── helius.service.ts              # Helius API integration

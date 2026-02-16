@@ -10,7 +10,6 @@ solana-address-tracker/
 │   ├── scripts/                  # Executable scripts
 │   │   ├── kyt-audit-single-address.ts    # Main KYT/KYA audit tool
 │   │   ├── trace-single-address.ts        # Basic address tracer
-│   │   ├── check-address.ts               # Quick address checker
 │   │   └── monitor-address.ts             # Real-time monitor
 │   │
 │   ├── services/                 # API integrations
@@ -92,24 +91,7 @@ npx tsx src/scripts/trace-single-address.ts <ADDRESS>
 
 ---
 
-#### 3. `check-address.ts`
-**Purpose**: Quick address risk check
-
-**Features**:
-- Fast risk assessment
-- Basic statistics
-- Console output only
-
-**Usage**:
-```bash
-npx tsx src/scripts/check-address.ts <ADDRESS>
-```
-
-**Output**: Console only
-
----
-
-#### 4. `monitor-address.ts`
+#### 3. `monitor-address.ts`
 **Purpose**: Real-time transaction monitoring
 
 **Features**:
