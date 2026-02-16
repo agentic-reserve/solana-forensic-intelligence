@@ -220,6 +220,21 @@ Run all analyses (trace + audit + forensic):
 npx tsx src/scripts/analyze.ts all <ADDRESS> 3
 ```
 
+### Real-Time Monitoring
+
+Monitor address for live updates using WebSocket:
+
+```bash
+npx tsx src/scripts/monitor.ts <ADDRESS>
+```
+
+**Features:**
+- Real-time account balance changes
+- Automatic reconnection
+- Health checks (ping every 60s)
+- Logs saved to `data/monitor/`
+- Press Ctrl+C to stop
+
 **Parameters:**
 - `<ADDRESS>`: Solana address to investigate
 - `3`: Analysis depth for audit/forensic (recommended: 2-5)
@@ -228,12 +243,13 @@ npx tsx src/scripts/analyze.ts all <ADDRESS> 3
 - Trace: `data/trace/`
 - Audit: `data/audit/`
 - Forensic: `data/forensic/<ADDRESS>/`
+- Monitor: `data/monitor/`
 
 ---
 
 ## Tools Overview
 
-### Unified Analysis Tool
+### 1. Unified Analysis Tool
 
 **Purpose:** All-in-one forensic analysis tool
 
@@ -266,6 +282,32 @@ npx tsx src/scripts/analyze.ts <COMMAND> <ADDRESS> [DEPTH]
 - Audit (depth 3): ~2 minutes
 - Forensic (depth 3): ~2 minutes
 - All: ~5 minutes
+
+### 2. Real-Time Monitor
+
+**Purpose:** Live address monitoring via WebSocket
+
+**Command:**
+```bash
+npx tsx src/scripts/monitor.ts <ADDRESS>
+```
+
+**Features:**
+- Real-time balance updates
+- WebSocket connection with auto-reconnect
+- Health checks (ping every 60s)
+- Automatic log saving
+- Graceful shutdown (Ctrl+C)
+
+**Best For:**
+- Live surveillance
+- Instant notifications
+- Ongoing monitoring
+- Alert systems
+
+**Output:**
+- Console: Real-time updates
+- File: `data/monitor/<ADDRESS>_monitor.json`
 
 ---
 
@@ -475,15 +517,18 @@ npx tsx src/scripts/analyze.ts <COMMAND> <ADDRESS> [DEPTH]
 solana-forensic-intelligence/
 ├── src/
 │   ├── scripts/
-│   │   └── analyze.ts                     # Unified analysis tool (all-in-one)
+│   │   ├── analyze.ts                     # Unified analysis tool (all-in-one)
+│   │   └── monitor.ts                     # Real-time WebSocket monitor
 │   ├── services/
-│   │   └── helius.service.ts              # Helius API integration
+│   │   ├── helius.service.ts              # Helius API integration
+│   │   └── websocket.service.ts           # WebSocket service
 │   └── types/
 │       └── index.ts                        # TypeScript definitions
 ├── data/
 │   ├── trace/                              # Quick trace outputs
 │   ├── audit/                              # Audit reports
-│   └── forensic/                           # Forensic visualizations
+│   ├── forensic/                           # Forensic visualizations
+│   └── monitor/                            # Real-time monitoring logs
 ├── docs/
 │   ├── FORENSIC_VISUALIZER.md             # Visualizer guide
 │   ├── QUICK_START_FORENSIC.md            # Quick start

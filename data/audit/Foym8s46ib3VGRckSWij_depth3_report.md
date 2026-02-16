@@ -1,6 +1,6 @@
 # KYT/KYA AUDIT REPORT
 
-**Generated:** 2026-02-16T14:28:31.277Z
+**Generated:** 2026-02-16T14:34:20.786Z
 **Target:** `Foym8s46ib3VGRckSWijmQKb9UfcRfuhQqMvHpmN1w21`
 **Depth:** 3
 
@@ -8,11 +8,11 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Received | 26.1057 SOL |
-| Total Sent | 26.7348 SOL |
-| Net Flow | -0.6291 SOL |
-| Transactions | 71 |
-| Counterparties | 57 |
-| Addresses Analyzed | 6 |
-| Transaction Flows | 76 |
+| Total Received | 26.1045 SOL |
+| Total Sent | 10924.9003 SOL |
+| Net Flow | -10898.7958 SOL |
+| Transactions | 655 |
+| Counterparties | 80 |
+| Addresses Analyzed | 46 |
+| Transaction Flows | 25129 |
 
